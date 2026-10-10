@@ -1,0 +1,42 @@
+# 每次推到 main，就把网页发布到 GitHub Pages（仓库 Settings → Pages 的 Source 已设为 GitHub Actions）。
+# 也可以在 Actions 页手动点 Run workflow 重发。
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只跑一个发布；正在发布的不打断，排队的新提交会接着发
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: 只拷网页运行要用的文件
+        run: |
+          rsync -a --exclude '.*' --exclude 'README.md' --exclude 'serve.py' --exclude 'media/pano.json' ./ _site/
+          du -sh _site
+          find _site -type f | sort
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v5

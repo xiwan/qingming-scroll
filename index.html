@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15110d">
+<title>清明上河图 · 卷轴互动版</title>
+<meta name="description" content="上下滑动，画卷左右展开：北宋汴京清明时节，从郊野、汴河、虹桥到城内市井的三分钟长卷。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='4' fill='%23b5382a'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='%23f8e9d8'%3E%E6%B2%B3%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="track" aria-hidden="true"></div>
+
+<main id="stage">
+  <header class="hud">
+    <div class="brand">
+      <span class="seal" aria-hidden="true">上河</span>
+      <h1>清明上河图</h1>
+      <span class="sub">卷轴互动版</span>
+    </div>
+    <div id="now" class="now" aria-live="polite">
+      <span id="phase" class="phase" hidden></span>
+      <span id="chap-no" class="chap-no"></span>
+      <span id="chap-name" class="chap-name"></span>
+      <span id="chap-desc" class="chap-desc"></span>
+    </div>
+    <nav class="ctrls" aria-label="播放控制">
+      <button id="btn-auto" type="button" title="自动展卷（空格）"><i class="ico ico-play"></i><span>自动展卷</span></button>
+      <button id="btn-rate" type="button" title="自动展卷的速度">1×</button>
+      <button id="btn-music" type="button" title="背景音乐（M）" aria-pressed="false"><i class="ico-note" aria-hidden="true">♪</i><span>音乐 开</span></button>
+      <button id="btn-sound" type="button" title="环境音：随滚动响起（N）" aria-pressed="false"><i class="ico ico-sound"></i><span>环境音 关</span></button>
+      <button id="btn-q" type="button">高清</button>
+      <button id="btn-fs" type="button" title="全屏（F）" aria-label="全屏"><i class="ico ico-fs"></i></button>
+    </nav>
+  </header>
+
+  <section id="scroll" class="scroll">
+    <div id="rod-l" class="rod" aria-hidden="true"></div>
+    <div id="paper" class="paper">
+      <video id="video" muted playsinline preload="auto" disablepictureinpicture disableremoteplayback></video>
+      <canvas id="freeze" class="freeze" aria-hidden="true"></canvas>
+      <div class="curl l" aria-hidden="true"></div>
+      <div class="curl r" aria-hidden="true"></div>
+    </div>
+    <div id="rod-r" class="rod" aria-hidden="true"></div>
+  </section>
+
+  <footer class="timeline">
+    <div id="labels" class="labels"></div>
+    <div id="bar" class="bar" title="点击跳转，按住左右拖动快速翻卷">
+      <div class="bar-clip">
+        <div class="tile tile-intro"></div>
+        <div id="pano" class="pano"></div>
+        <div class="tile tile-outro"></div>
+        <div id="win" class="win"></div>
+      </div>
+      <div id="marks" class="marks"></div>
+      <div id="buf" class="buf"></div>
+      <div id="tip" class="tip"></div>
+    </div>
+    <div class="meta">
+      <span class="keys">上下滑动 / 拖动画面 展卷 · ← → 前后 · 1–7 跳段 · 空格 自动 · M 音乐</span>
+      <span class="clock"><span id="clock">0:00</span> / <span id="total"></span></span>
+    </div>
+  </footer>
+
+  <div id="hint" class="hint" aria-hidden="true">
+    <span class="hint-ico"><i></i></span>
+    <span>上下滑动，画卷左右展开</span>
+  </div>
+</main>
+
+<div id="cover" class="cover">
+  <div id="cover-bg" class="cover-bg"></div>
+  <div class="cover-card">
+    <div class="cover-title">
+      <span class="cover-name">清明上河圖</span>
+      <span class="cover-sub">倣北宋張擇端筆意</span>
+      <span class="seal big" aria-hidden="true">上河</span>
+    </div>
+    <button id="btn-open" class="btn-open" type="button">展　卷</button>
+    <p class="cover-how">上下滑动，画卷左右展开——播放快慢、前进后退，都在你手里<br>
+      <small>滚轮 · 触控板 · 拖动画面 · 方向键 · 空格自动展卷 · M 音乐 · N 环境音</small></p>
+    <p id="load" class="cover-load">载入中…</p>
+    <p id="cover-music" class="cover-music"></p>
+  </div>
+</div>
+
+<audio id="audio" preload="auto"></audio>
+<audio id="bgm" preload="auto"></audio>
+<noscript><p class="noscript">这个页面需要开启 JavaScript。</p></noscript>
+<script src="media/meta.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
